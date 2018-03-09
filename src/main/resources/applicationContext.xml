@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--整个配置文件的根节点，包含一个或者多个bean元素 -->
+<!--xmlns是命名空间的定义，xsi:schemalocation是上述命名空间定义配套的文件的装载路径-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/data/jpa
+       http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       ">
+
+
+    <!--初始entity实体管理器-->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="permissionPersistenceUnit"/>
+    </bean>
+    <!--初始transaction事务管理器-->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!--初始化spring JPA-->
+    <jpa:repositories base-package="com.xingong.bishe"
+                      entity-manager-factory-ref="entityManagerFactory"
+                      transaction-manager-ref="transactionManager"
+                      repository-impl-postfix="Impl">
+    </jpa:repositories>
+    <!--org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean -->
+
+
+
+
+
+    <!-- 建立视图内拦截器来解决JPA中访问延迟加载属性时产生的无会话异常 -->
+    <!-- LazyInitializationException: could not initialize proxy no session -->
+    <!-- 此拦截器会注入到servlet配置中的DefaultAnnotationHandlerMapping中 -->
+    <bean name="openEntityManagerInViewInterceptor"
+          class="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor">
+        <property name="entityManagerFactory">
+            <ref bean="entityManagerFactory"/>
+        </property>
+    </bean>
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="openEntityManagerInViewInterceptor" />
+            </list>
+        </property>
+    </bean>
+
+</beans>
