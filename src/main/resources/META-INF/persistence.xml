@@ -13,7 +13,7 @@
             <property name="hibernate.max_fetch_depth" value="5"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
 
-            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/mysql"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/bishe"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
 
 
