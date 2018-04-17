@@ -12,6 +12,10 @@
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.max_fetch_depth" value="5"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <!-- 数据库连接超时后自动重连 -->
+            <property name="hibernate.connection.autoReconnect" value="true"/>
+            <property name="connection.autoReconnectForPools" value="true"/>
+            <property name="connection.is-connection-validation-required" value="true"/>
 
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/bishe"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>

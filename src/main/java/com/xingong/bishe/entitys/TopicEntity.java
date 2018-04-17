@@ -1,7 +1,7 @@
 package com.xingong.bishe.entitys;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by zhang on 2018/4/17.
@@ -16,7 +16,7 @@ public class TopicEntity {
     private String topicteacher;
     private Integer supplynum;
     private Integer alreadynum;
-    private Timestamp createtime;
+    private Date createtime;
 
     @Id
     @Column(name = "topicid")
@@ -90,11 +90,11 @@ public class TopicEntity {
 
     @Basic
     @Column(name = "createtime")
-    public Timestamp getCreatetime() {
+    public Date getCreatetime() {
         return createtime;
     }
 
-    public void setCreatetime(Timestamp createtime) {
+    public void setCreatetime(Date createtime) {
         this.createtime = createtime;
     }
 
