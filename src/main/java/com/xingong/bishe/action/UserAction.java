@@ -47,4 +47,63 @@ public class UserAction {
         return baseResponse;
     }
 
+    /**
+     * 修改用户密码
+     * @param userid
+     * @param password
+     * @return
+     */
+    @RequestMapping(value = "updatepass",method = {RequestMethod.GET})
+    @ResponseBody
+    public BaseResponse updatepass(String userid,String password){
+        BaseResponse baseResponse = new BaseResponse();
+
+        try {
+            UserEntity userEntity = userService.getUserById(userid);
+            if (userEntity != null){
+                userEntity.setUserpassword(password);
+                userService.update(userEntity);
+                baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
+                baseResponse.setMessage("修改成功！");
+            }else {
+                baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
+                baseResponse.setMessage("修改失败！");
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
+            baseResponse.setMessage("修改异常！");
+        }
+        return baseResponse;
+    }
+
+    /**
+     * 注册用户
+     * @param userEntity
+     * @return
+     */
+    @RequestMapping(value = "register",method = {RequestMethod.POST},produces = {"application/json"})
+    @ResponseBody
+    public BaseResponse register(UserEntity userEntity){
+        BaseResponse baseResponse = new BaseResponse();
+        try {
+            if (userEntity != null){
+                userService.register(userEntity);
+                baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
+                baseResponse.setMessage("注册成功！");
+            }else {
+                baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
+                baseResponse.setMessage("注册信息为空！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
+            baseResponse.setMessage("注册异常！");
+        }
+        return baseResponse;
+    }
+
 }

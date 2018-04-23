@@ -1,6 +1,7 @@
 package com.xingong.bishe.entitys;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -17,6 +18,10 @@ public class TopicEntity {
     private Integer supplynum;
     private Integer alreadynum;
     private Date createtime;
+
+    public void setCreatetime(Timestamp createtime) {
+        this.createtime = createtime;
+    }
 
     @Id
     @Column(name = "topicid")

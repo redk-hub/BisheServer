@@ -18,7 +18,9 @@ public interface UserDao extends JpaRepository<UserEntity,String>{
     public UserEntity getUserById(String userid);
 
     @Transactional
-    @Modifying(clearAutomatically = true)
+    @Modifying(clearAutomatically = true)//清除jpa的一级缓存,能实时刷新数据
     @Query(value = "update user t set t.password = ?1 where t.username = ?2",nativeQuery = true)
     public void modifyPassword(String password,String username);
+
+
 }

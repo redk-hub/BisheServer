@@ -26,4 +26,16 @@ public class UserService {
     public UserEntity getUserById(String userid){
         return userDao.getUserById(userid);
     }
+
+    /**
+     * 用户注册
+     * @param userEntity
+     */
+    public void register(UserEntity userEntity){
+        userDao.save(userEntity);
+    }
+
+    public void update(UserEntity userEntity){
+        userDao.saveAndFlush(userEntity);
+    }
 }

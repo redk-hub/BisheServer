@@ -1,6 +1,7 @@
 package com.xingong.bishe.entitys;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -13,6 +14,10 @@ public class NoticeEntity {
     private String userid;
     private String noticecontent;
     private Date createtime;
+
+    public void setCreatetime(Timestamp createtime) {
+        this.createtime = createtime;
+    }
 
     @Id
     @Column(name = "noticid")
