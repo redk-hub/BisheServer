@@ -13,15 +13,12 @@ public class TopicEntity {
     private String topicid;
     private String topicname;
     private String topiccontent;
-    private int topicstate;
+    private int topicstate;//0待审批，1审批通过，-1审核未通过重新修改
     private String topicteacher;
     private Integer supplynum;
     private Integer alreadynum;
     private Date createtime;
 
-    public void setCreatetime(Timestamp createtime) {
-        this.createtime = createtime;
-    }
 
     @Id
     @Column(name = "topicid")
@@ -99,9 +96,10 @@ public class TopicEntity {
         return createtime;
     }
 
-    public void setCreatetime(Date createtime) {
+    public void setCreatetime(Date createtime){
         this.createtime = createtime;
     }
+
 
     @Override
     public boolean equals(Object o) {

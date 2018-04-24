@@ -10,6 +10,7 @@ import javax.persistence.*;
 public class StuTopicEntity {
     private String studentid;
     private Integer designprocess;
+    private String topicid;
 
     @Id
     @Column(name = "studentid")
@@ -50,5 +51,15 @@ public class StuTopicEntity {
         int result = studentid != null ? studentid.hashCode() : 0;
         result = 31 * result + (designprocess != null ? designprocess.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "topicid")
+    public String getTopicid() {
+        return topicid;
+    }
+
+    public void setTopicid(String topicid) {
+        this.topicid = topicid;
     }
 }

@@ -3,7 +3,7 @@ package com.xingong.bishe.entitys;
 import javax.persistence.*;
 
 /**
- * Created by zhang on 2018/4/17.
+ * Created by zhang on 2018/4/23.
  */
 @Entity
 @Table(name = "user", schema = "bishe", catalog = "")
@@ -11,11 +11,11 @@ public class UserEntity {
     private String userid;
     private String username;
     private String userpassword;
-    private int userrole;
     private String userphone;
     private String collegeid;
     private String collegename;
     private String major;
+    private int role;
 
     @Id
     @Column(name = "userid")
@@ -45,16 +45,6 @@ public class UserEntity {
 
     public void setUserpassword(String userpassword) {
         this.userpassword = userpassword;
-    }
-
-    @Basic
-    @Column(name = "userrole")
-    public int getUserrole() {
-        return userrole;
-    }
-
-    public void setUserrole(int userrole) {
-        this.userrole = userrole;
     }
 
     @Basic
@@ -97,6 +87,16 @@ public class UserEntity {
         this.major = major;
     }
 
+    @Basic
+    @Column(name = "role")
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -104,7 +104,7 @@ public class UserEntity {
 
         UserEntity that = (UserEntity) o;
 
-        if (userrole != that.userrole) return false;
+        if (role != that.role) return false;
         if (userid != null ? !userid.equals(that.userid) : that.userid != null) return false;
         if (username != null ? !username.equals(that.username) : that.username != null) return false;
         if (userpassword != null ? !userpassword.equals(that.userpassword) : that.userpassword != null) return false;
@@ -121,11 +121,11 @@ public class UserEntity {
         int result = userid != null ? userid.hashCode() : 0;
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (userpassword != null ? userpassword.hashCode() : 0);
-        result = 31 * result + userrole;
         result = 31 * result + (userphone != null ? userphone.hashCode() : 0);
         result = 31 * result + (collegeid != null ? collegeid.hashCode() : 0);
         result = 31 * result + (collegename != null ? collegename.hashCode() : 0);
         result = 31 * result + (major != null ? major.hashCode() : 0);
+        result = 31 * result + role;
         return result;
     }
 }

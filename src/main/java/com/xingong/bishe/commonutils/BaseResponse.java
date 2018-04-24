@@ -11,7 +11,7 @@ public class BaseResponse {
     protected String message = "";
 
 
-    protected String data;
+    protected Object data;
 
     public BaseResponse() {
     }
@@ -32,11 +32,11 @@ public class BaseResponse {
         this.message = message;
     }
 
-    public String getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Object data) {
         this.data = data;
     }
 

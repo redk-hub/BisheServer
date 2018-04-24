@@ -11,6 +11,7 @@ public class SelectManageEntity {
     private String studentid;
     private Integer selectIspass;
     private String taskbookPath;
+    private String topicid;
 
     @Id
     @Column(name = "studentid")
@@ -42,6 +43,15 @@ public class SelectManageEntity {
         this.taskbookPath = taskbookPath;
     }
 
+    @Basic
+    @Column(name = "topicid")
+    public String getTopicid() {
+        return topicid;
+    }
+
+    public void setTopicid(String topicid) {
+        this.topicid = topicid;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,4 +73,6 @@ public class SelectManageEntity {
         result = 31 * result + (taskbookPath != null ? taskbookPath.hashCode() : 0);
         return result;
     }
+
+
 }
