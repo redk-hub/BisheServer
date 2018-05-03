@@ -29,6 +29,10 @@ public class TopicService {
         topicDao.save(topicEntity);
     }
 
+    public void deleteTopic(String topicid){
+        topicDao.delete(topicid);
+    }
+
     public void updateState(int topicstate,String topicid){
         topicDao.updateState(topicstate,topicid);
     }
@@ -57,6 +61,10 @@ public class TopicService {
         }else {
             return false;
         }
+    }
+
+    public TopicEntity queryById(String topicid){
+        return topicDao.queryById(topicid);
     }
 
 }

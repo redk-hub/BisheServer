@@ -73,6 +73,49 @@ public class TopicAction {
     }
 
     /**
+     * 修改课题
+     * @param topicEntity
+     * @return
+     */
+    @RequestMapping(value = "updatetopic", method = {RequestMethod.POST,RequestMethod.GET}, produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public BaseResponse updatetopic(@RequestBody TopicEntity topicEntity) {
+        BaseResponse baseResponse = new BaseResponse();
+
+        try {
+            topicService.saveTopic(topicEntity);
+
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
+            baseResponse.setMessage("修改成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
+            baseResponse.setMessage("修改课题异常！");
+        }
+        return baseResponse;
+    }
+
+    @RequestMapping(value = "deletetopic", method = {RequestMethod.POST,RequestMethod.GET}, produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public BaseResponse deletetopic(@RequestBody TopicEntity topicEntity) {
+        BaseResponse baseResponse = new BaseResponse();
+
+        try {
+            topicService.saveTopic(topicEntity);
+
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
+            baseResponse.setMessage("删除成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
+            baseResponse.setMessage("删除课题异常！");
+        }
+        return baseResponse;
+    }
+
+    /**
      * 管理员审批课题是否通过
      * topicstate 0待审批，1审批通过，-1审核未通过重新修改
      *
