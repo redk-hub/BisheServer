@@ -12,6 +12,12 @@ public class SelectManageEntity {
     private Integer selectIspass;
     private String taskbookPath;
     private String topicid;
+    private String studentname;
+    private String major;
+    private String studentphone;
+    private String taskbookContent;
+    private String taskbookTechnology;
+    private String taskbookProcess;
 
     @Id
     @Column(name = "studentid")
@@ -52,6 +58,7 @@ public class SelectManageEntity {
     public void setTopicid(String topicid) {
         this.topicid = topicid;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,5 +81,63 @@ public class SelectManageEntity {
         return result;
     }
 
+    @Basic
+    @Column(name = "studentname")
+    public String getStudentname() {
+        return studentname;
+    }
 
+    public void setStudentname(String studentname) {
+        this.studentname = studentname;
+    }
+
+    @Basic
+    @Column(name = "major")
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    @Basic
+    @Column(name = "studentphone")
+    public String getStudentphone() {
+        return studentphone;
+    }
+
+    public void setStudentphone(String studentphone) {
+        this.studentphone = studentphone;
+    }
+
+    @Basic
+    @Column(name = "taskbook_content")
+    public String getTaskbookContent() {
+        return taskbookContent;
+    }
+
+    public void setTaskbookContent(String taskbookContent) {
+        this.taskbookContent = taskbookContent;
+    }
+
+    @Basic
+    @Column(name = "taskbook_technology")
+    public String getTaskbookTechnology() {
+        return taskbookTechnology;
+    }
+
+    public void setTaskbookTechnology(String taskbookTechnology) {
+        this.taskbookTechnology = taskbookTechnology;
+    }
+
+    @Basic
+    @Column(name = "taskbook_process")
+    public String getTaskbookProcess() {
+        return taskbookProcess;
+    }
+
+    public void setTaskbookProcess(String taskbookProcess) {
+        this.taskbookProcess = taskbookProcess;
+    }
 }

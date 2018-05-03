@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * Created by zhang on 2018/4/23.
  */
@@ -36,9 +38,12 @@ public class TopicService {
      * @param pageable
      * @return
      */
-    public Page<TopicEntity> findAllByPage(String topicteacher,Pageable pageable){
+    public Page<TopicEntity> findAllByPage(String topicteacher, Pageable pageable){
+//        List<TopicEntity> topicList = topicDao.topicList(topicteacher);
         if (topicteacher.equals("")){
             return topicDao.findAll(pageable);
+        }else if (topicDao.topicList(topicteacher).size() == 0){
+            return null;
         }
         return topicDao.findAllByPage(topicteacher,pageable);
     }
@@ -46,7 +51,8 @@ public class TopicService {
     public boolean selectTopic(String topicid){
         TopicEntity topicEntity = topicDao.queryById(topicid);
         if (topicEntity.getAlreadynum()<topicEntity.getSupplynum()){
-            topicDao.setAlreadynum(topicid);
+            topicEntity.setAlreadynum(topicEntity.getAlreadynum()+1);
+            topicDao.save(topicEntity);
             return true;
         }else {
             return false;

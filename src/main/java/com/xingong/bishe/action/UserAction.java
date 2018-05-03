@@ -32,6 +32,7 @@ public class UserAction {
         try {
             UserEntity userInfo = userService.getUserById(userid);
             if (userInfo != null && password.equals(userInfo.getUserpassword())){
+                baseResponse.setData(userInfo);
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
                 baseResponse.setMessage("登录成功！");
             }else {
@@ -47,6 +48,35 @@ public class UserAction {
         return baseResponse;
     }
 
+    /**
+     * 查询用户信息
+     * @param userid
+     * @return
+     */
+    @RequestMapping(value = "info",method = {RequestMethod.GET},produces = {"application/json;charset=UTF-8" })
+    @ResponseBody
+    public BaseResponse login(String userid){
+
+        BaseResponse baseResponse = new BaseResponse();
+
+        try {
+            UserEntity userInfo = userService.getUserById(userid);
+            if (userInfo != null){
+                baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
+                baseResponse.setMessage("查询成功！");
+                baseResponse.setData(userInfo);
+            }else {
+                baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
+                baseResponse.setMessage("用户信息为空！");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
+            baseResponse.setMessage("查询异常！");
+            logger.error(e.getMessage());
+        }
+        return baseResponse;
+    }
     /**
      * 修改用户密码
      * @param userid

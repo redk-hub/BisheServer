@@ -17,7 +17,7 @@ public class SelectManageService {
     @Autowired
     SelectManageDao selectManageDao;
 
-    public SelectManageEntity qeyryById(String studentid){
+    public SelectManageEntity queryById(String studentid){
         return selectManageDao.queryById(studentid);
     }
 
