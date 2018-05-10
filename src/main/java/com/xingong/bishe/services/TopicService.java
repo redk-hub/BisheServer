@@ -46,10 +46,10 @@ public class TopicService {
 //        List<TopicEntity> topicList = topicDao.topicList(topicteacher);
         if (topicteacher.equals("")){
             return topicDao.findAll(pageable);
-        }else if (topicDao.topicList(topicteacher).size() == 0){
-            return null;
+        }else {
+            return topicDao.findAllByPage(topicteacher,pageable);
         }
-        return topicDao.findAllByPage(topicteacher,pageable);
+
     }
 
     public boolean selectTopic(String topicid){
@@ -62,6 +62,7 @@ public class TopicService {
             return false;
         }
     }
+
 
     public TopicEntity queryById(String topicid){
         return topicDao.queryById(topicid);

@@ -98,11 +98,11 @@ public class TopicAction {
 
     @RequestMapping(value = "deletetopic", method = {RequestMethod.POST,RequestMethod.GET}, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public BaseResponse deletetopic(@RequestBody TopicEntity topicEntity) {
+    public BaseResponse deletetopic(String topicid) {
         BaseResponse baseResponse = new BaseResponse();
 
         try {
-            topicService.saveTopic(topicEntity);
+            topicService.deleteTopic(topicid);
 
             baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
             baseResponse.setMessage("删除成功！");
@@ -159,7 +159,7 @@ public class TopicAction {
             Sort sort = new Sort(Sort.Direction.DESC, "createtime");
             Pageable pageable = new PageRequest(page, size, sort);
             Page<TopicEntity> topicList = topicService.findAllByPage(userid, pageable);
-            if (topicList == null){
+            if (topicList.getContent().size() == 0){
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
                 baseResponse.setMessage("该老师没有课题！");
             }else {
@@ -176,6 +176,31 @@ public class TopicAction {
         }
         return baseResponse;
     }
+
+
+    /**
+     * 根据课题id查询课题信息
+     * @param topicid
+     * @return
+     */
+    @RequestMapping(value = "query",method = {RequestMethod.GET})
+    @ResponseBody
+    public BaseResponse query(String topicid){
+        BaseResponse baseResponse = new BaseResponse();
+        try {
+            TopicEntity topicEntity = topicService.queryById(topicid);
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
+            baseResponse.setData(topicEntity);
+            baseResponse.setMessage("查询课题成功！");
+        }catch (Exception e){
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
+            baseResponse.setMessage("查询异常！");
+        }
+        return baseResponse;
+    }
+
 
     /**
      * 学生选题操作接口
@@ -202,12 +227,16 @@ public class TopicAction {
                 return baseResponse;
             } else if (topicService.selectTopic(topicid)) {
                 SelectManageEntity selectEntity = new SelectManageEntity();
+                TopicEntity topicEntity = topicService.queryById(topicid);
                 UserEntity userEntity = userService.getUserById(userid);
                 selectEntity.setStudentid(userid);
                 selectEntity.setStudentname(userEntity.getUsername());
                 selectEntity.setMajor(userEntity.getMajor());
                 selectEntity.setStudentphone(userEntity.getUserphone());
                 selectEntity.setTopicid(topicid);
+                selectEntity.setTeacherid(topicEntity.getTeacherid());
+                selectEntity.setTeachername(topicEntity.getTeachername());
+                selectEntity.setTopicname(topicEntity.getTopicname());
                 selectEntity.setSelectIspass(0);
                 selectManageDao.save(selectEntity);
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);

@@ -12,7 +12,7 @@ public class UserEntity {
     private String username;
     private String userpassword;
     private String userphone;
-    private String collegeid;
+    private Integer collegeid;
     private String collegename;
     private String major;
     private int role;
@@ -59,11 +59,11 @@ public class UserEntity {
 
     @Basic
     @Column(name = "collegeid")
-    public String getCollegeid() {
+    public Integer getCollegeid() {
         return collegeid;
     }
 
-    public void setCollegeid(String collegeid) {
+    public void setCollegeid(Integer collegeid) {
         this.collegeid = collegeid;
     }
 

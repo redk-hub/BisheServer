@@ -10,8 +10,14 @@ import javax.persistence.*;
 public class MiddlecheckManageEntity {
     private String studentid;
     private String middlereportPath;
-    private Integer middlereportIspass;
-    private String middlereportSuggest;
+    private String studentname;
+    private String teachername;
+    private Integer groupid;
+    private String teacherid;
+    private Integer middlecheckIspass;
+    private String middlecheckSuggest;
+    private Integer middlecheckScore;
+    private String topicname;
 
     @Id
     @Column(name = "studentid")
@@ -33,26 +39,6 @@ public class MiddlecheckManageEntity {
         this.middlereportPath = middlereportPath;
     }
 
-    @Basic
-    @Column(name = "middlereport_ispass")
-    public Integer getMiddlereportIspass() {
-        return middlereportIspass;
-    }
-
-    public void setMiddlereportIspass(Integer middlereportIspass) {
-        this.middlereportIspass = middlereportIspass;
-    }
-
-    @Basic
-    @Column(name = "middlereport_suggest")
-    public String getMiddlereportSuggest() {
-        return middlereportSuggest;
-    }
-
-    public void setMiddlereportSuggest(String middlereportSuggest) {
-        this.middlereportSuggest = middlereportSuggest;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,10 +49,7 @@ public class MiddlecheckManageEntity {
         if (studentid != null ? !studentid.equals(that.studentid) : that.studentid != null) return false;
         if (middlereportPath != null ? !middlereportPath.equals(that.middlereportPath) : that.middlereportPath != null)
             return false;
-        if (middlereportIspass != null ? !middlereportIspass.equals(that.middlereportIspass) : that.middlereportIspass != null)
-            return false;
-        if (middlereportSuggest != null ? !middlereportSuggest.equals(that.middlereportSuggest) : that.middlereportSuggest != null)
-            return false;
+
 
         return true;
     }
@@ -75,8 +58,86 @@ public class MiddlecheckManageEntity {
     public int hashCode() {
         int result = studentid != null ? studentid.hashCode() : 0;
         result = 31 * result + (middlereportPath != null ? middlereportPath.hashCode() : 0);
-        result = 31 * result + (middlereportIspass != null ? middlereportIspass.hashCode() : 0);
-        result = 31 * result + (middlereportSuggest != null ? middlereportSuggest.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "studentname")
+    public String getStudentname() {
+        return studentname;
+    }
+
+    public void setStudentname(String studentname) {
+        this.studentname = studentname;
+    }
+
+    @Basic
+    @Column(name = "teachername")
+    public String getTeachername() {
+        return teachername;
+    }
+
+    public void setTeachername(String teachername) {
+        this.teachername = teachername;
+    }
+
+    @Basic
+    @Column(name = "groupid")
+    public Integer getGroupid() {
+        return groupid;
+    }
+
+    public void setGroupid(Integer groupid) {
+        this.groupid = groupid;
+    }
+
+    @Basic
+    @Column(name = "teacherid")
+    public String getTeacherid() {
+        return teacherid;
+    }
+
+    public void setTeacherid(String teacherid) {
+        this.teacherid = teacherid;
+    }
+
+    @Basic
+    @Column(name = "middlecheck_ispass")
+    public Integer getMiddlecheckIspass() {
+        return middlecheckIspass;
+    }
+
+    public void setMiddlecheckIspass(Integer middlecheckIspass) {
+        this.middlecheckIspass = middlecheckIspass;
+    }
+
+    @Basic
+    @Column(name = "middlecheck_suggest")
+    public String getMiddlecheckSuggest() {
+        return middlecheckSuggest;
+    }
+
+    public void setMiddlecheckSuggest(String middlecheckSuggest) {
+        this.middlecheckSuggest = middlecheckSuggest;
+    }
+
+    @Basic
+    @Column(name = "middlecheck_score")
+    public Integer getMiddlecheckScore() {
+        return middlecheckScore;
+    }
+
+    public void setMiddlecheckScore(Integer middlecheckScore) {
+        this.middlecheckScore = middlecheckScore;
+    }
+
+    @Basic
+    @Column(name = "topicname")
+    public String getTopicname() {
+        return topicname;
+    }
+
+    public void setTopicname(String topicname) {
+        this.topicname = topicname;
     }
 }

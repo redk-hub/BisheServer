@@ -1,10 +1,14 @@
 package com.xingong.bishe.dao;
 
 import com.xingong.bishe.entitys.UserEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * UserDao
@@ -23,4 +27,6 @@ public interface UserDao extends JpaRepository<UserEntity,String>{
     public void modifyPassword(String password,String username);
 
 
+    @Query("select t from UserEntity t where t.role = ?1 and t.collegeid = ?2")
+    public Page<UserEntity> queryPageByRole(int role,int collegeid, Pageable pageable);
 }

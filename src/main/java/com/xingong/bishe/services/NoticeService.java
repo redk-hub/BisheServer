@@ -17,8 +17,8 @@ public class NoticeService {
     @Autowired
     NoticeDao noticeDao;
 
-    public List<NoticeEntity> queryNotice(String userid) {
-        List<NoticeEntity> noticeList = noticeDao.noticeList(userid);
+    public List<NoticeEntity> queryNotice() {
+        List<NoticeEntity> noticeList = noticeDao.noticeList();
         return noticeList;
     }
 

@@ -3,11 +3,12 @@ package com.xingong.bishe.action;
 import com.xingong.bishe.commonutils.BaseResponse;
 import com.xingong.bishe.commonutils.MyFileUtil;
 import com.xingong.bishe.commonutils.ReturnInfo;
-import com.xingong.bishe.dao.MiddlecheckDao;
+import com.xingong.bishe.dao.ScoreDao;
+import com.xingong.bishe.entitys.DefenceManageEntity;
 import com.xingong.bishe.entitys.MiddlecheckManageEntity;
 import com.xingong.bishe.entitys.OpenManageEntity;
-import com.xingong.bishe.entitys.SelectManageEntity;
-import com.xingong.bishe.services.OpenManageService;
+import com.xingong.bishe.entitys.ScoreManageEntity;
+import com.xingong.bishe.services.DefenceService;
 import com.xingong.bishe.services.StuTopicService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,39 +20,44 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
- * Created by zhang on 2018/4/26.
+ * Created by zhang on 2018/5/10.
  */
 @Controller
-@RequestMapping("open")
-public class OpenManageAction {
+@RequestMapping(value = "defence")
+public class DefenceAction {
 
     @Autowired
-    OpenManageService openService;
+    DefenceService defenceService;
+
     @Autowired
     StuTopicService stuTopicService;
+
     @Autowired
-    MiddlecheckDao middlecheckDao;
+    ScoreDao scoreDao;
 
-    Logger logger = Logger.getLogger(OpenManageAction.class);
+    Logger logger = Logger.getLogger(DefenceAction.class);
 
+
+    /**
+     * 学生查询自己的答辩信息
+     * @param studentid
+     * @return
+     */
     @RequestMapping(value = "query", method = {RequestMethod.GET})
     @ResponseBody
     public BaseResponse query(String studentid) {
         BaseResponse baseResponse = new BaseResponse();
 
         try {
-            List<OpenManageEntity> openManageList = openService.queryOpenList(studentid);
-            if (openManageList.size() ==0){
-                baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
-                baseResponse.setMessage("任务书还未下发，没有相关信息！");
-            }else {
-                baseResponse.setData(openManageList);
-                baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
-                baseResponse.setMessage("查询成功！");
-            }
+            DefenceManageEntity defenceManageEntity = defenceService.query(studentid);
+            baseResponse.setData(defenceManageEntity);
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
+            baseResponse.setMessage("查询成功！");
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,13 +69,14 @@ public class OpenManageAction {
     }
 
     /**
-     * 开题管理的列表，老师用到
+     * 答辩管理的列表，老师用到
+     *
      * @param page
      * @param size
      * @param teacherid
      * @return
      */
-    @RequestMapping(value = "openlist", method = {RequestMethod.GET})
+    @RequestMapping(value = "defencelist", method = {RequestMethod.GET})
     @ResponseBody
     public BaseResponse successlist(@RequestParam(value = "page", defaultValue = "0") int page,
                                     @RequestParam(value = "size", defaultValue = "15") int size,
@@ -79,12 +86,12 @@ public class OpenManageAction {
         try {
 //            Sort sort = new Sort(Sort.Direction.DESC, "createtime");
             Pageable pageable = new PageRequest(page, size);
-            Page<OpenManageEntity> selectList = openService.findAllByPage(teacherid, pageable);
-            if (selectList.getContent().size() == 0){
+            Page<DefenceManageEntity> denfenceList = defenceService.findAllByPage(teacherid, pageable);
+            if (denfenceList.getContent().size() == 0) {
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
-                baseResponse.setMessage("没有进行到开题管理的学生！");
-            }else {
-                baseResponse.setData(selectList);
+                baseResponse.setMessage("没有进行到答辩的学生！");
+            } else {
+                baseResponse.setData(denfenceList);
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
                 baseResponse.setMessage("查询成功！");
             }
@@ -97,20 +104,24 @@ public class OpenManageAction {
         }
         return baseResponse;
     }
+
     /**
-     * 上传开题报告
+     * 提交论文初稿
+     *
+     * @param studentid
+     * @return
      */
-    @RequestMapping(value = "uploadreport", method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "commitdraft", method = {RequestMethod.GET, RequestMethod.POST}, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public BaseResponse uploadreport(HttpServletRequest request,
-                                     @RequestParam("studentid") String studentid,
-                                     @RequestBody MultipartFile file) {
+    public BaseResponse commitdraft(HttpServletRequest request,
+                                    @RequestParam("studentid") String studentid,
+                                    @RequestBody MultipartFile file) {
         BaseResponse baseResponse = new BaseResponse();
 
         try {
-            String topicname = openService.getTopicname(studentid);
-            String filename = MyFileUtil.getUploadFilename(request,topicname, file);
-            openService.uploadReport(studentid,filename);
+            String topicname = defenceService.getTopicname(studentid);
+            String filename = MyFileUtil.getUploadFilename(request, topicname, file);
+            defenceService.setDraftPath(studentid, filename);
             baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
             baseResponse.setMessage("上传成功！");
         } catch (Exception e) {
@@ -123,30 +134,16 @@ public class OpenManageAction {
     }
 
     /**
-     * 设置开题报告是否通过
+     * 设置论文初稿是否通过
      * ispass = 0 不通过，1是通过
      */
-    @RequestMapping(value = "reportispass", method = {RequestMethod.GET})
+    @RequestMapping(value = "draftispass", method = {RequestMethod.GET})
     @ResponseBody
-    public BaseResponse setIsPass(String studentid, int ispass ,int score,String suggust) {
+    public BaseResponse draftIspass(String studentid, int ispass,String suggust) {
         BaseResponse baseResponse = new BaseResponse();
 
         try {
-            openService.setReportIsPass(studentid,ispass,score,suggust);
-            if (ispass == 1){
-                //进入到第三步，中检
-                stuTopicService.setProcess(studentid,3);
-                //开启中检
-                OpenManageEntity openManageEntity = openService.queryOpenById(studentid);
-                MiddlecheckManageEntity middlecheckEntity = new MiddlecheckManageEntity();
-                middlecheckEntity.setStudentid(studentid);
-                middlecheckEntity.setStudentname(openManageEntity.getStudentname());
-                middlecheckEntity.setTeachername(openManageEntity.getTeachername());
-                middlecheckEntity.setTeacherid(openManageEntity.getTeacherid());
-                middlecheckEntity.setTopicname(openManageEntity.getTopicname());
-                middlecheckDao.save(middlecheckEntity);
-
-            }
+            defenceService.setDraftIsPass(studentid,ispass,suggust);
             baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
             baseResponse.setMessage("已审批！");
         } catch (Exception e) {
@@ -159,19 +156,22 @@ public class OpenManageAction {
     }
 
     /**
-     * 上传文献综述
+     * 提交论文定稿
+     *
+     * @param studentid
+     * @return
      */
-    @RequestMapping(value = "uploadwenxian", method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "commitfinal", method = {RequestMethod.GET, RequestMethod.POST}, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public BaseResponse uploadwenxin(HttpServletRequest request,
-                                     @RequestParam("studentid") String studentid,
-                                     @RequestBody MultipartFile file) {
+    public BaseResponse commitfinal(HttpServletRequest request,
+                                    @RequestParam("studentid") String studentid,
+                                    @RequestBody MultipartFile file) {
         BaseResponse baseResponse = new BaseResponse();
 
         try {
-            String topicname = openService.getTopicname(studentid);
-            String filename = MyFileUtil.getUploadFilename(request,topicname, file);
-            openService.uploadWinxian(studentid,filename);
+            String topicname = defenceService.getTopicname(studentid);
+            String filename = MyFileUtil.getUploadFilename(request, topicname, file);
+            defenceService.setFinalPath(studentid, filename);
             baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
             baseResponse.setMessage("上传成功！");
         } catch (Exception e) {
@@ -184,16 +184,16 @@ public class OpenManageAction {
     }
 
     /**
-     * 设置文献综述是否通过
+     * 设置论文定稿是否通过
      * ispass = 0 不通过，1是通过
      */
-    @RequestMapping(value = "wenxianispass", method = {RequestMethod.GET})
+    @RequestMapping(value = "finalispass", method = {RequestMethod.GET})
     @ResponseBody
-    public BaseResponse wenxianIspass(String studentid, int ispass,int score,String suggust) {
+    public BaseResponse finalIspass(String studentid, int ispass,String suggust) {
         BaseResponse baseResponse = new BaseResponse();
 
         try {
-            openService.setWinxianIsPass(studentid,ispass,score,suggust);
+            defenceService.setFinalIsPass(studentid,ispass,suggust);
             baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
             baseResponse.setMessage("已审批！");
         } catch (Exception e) {
@@ -201,6 +201,45 @@ public class OpenManageAction {
             logger.error(e.getMessage());
             baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
             baseResponse.setMessage("审批异常！");
+        }
+        return baseResponse;
+    }
+
+    /**
+     * 设置答辩时间和地点
+     * @param studentid
+     * @param time
+     * @param location
+     * @return
+     */
+    @RequestMapping(value = "settime", method = {RequestMethod.GET})
+    @ResponseBody
+    public BaseResponse settime(String studentid, Date time, String location) {
+        BaseResponse baseResponse = new BaseResponse();
+
+        try {
+            defenceService.setDefenceTime(studentid,time,location);
+
+            //进入成绩管理
+            stuTopicService.setProcess(studentid,5);
+
+            //添加成绩管理数据
+            DefenceManageEntity defenceManageEntity = defenceService.query(studentid);
+            ScoreManageEntity scoreManageEntity = new ScoreManageEntity();
+            scoreManageEntity.setStudentid(studentid);
+            scoreManageEntity.setStudentname(defenceManageEntity.getStudentname());
+            scoreManageEntity.setTeacherid(defenceManageEntity.getTeacherid());
+            scoreManageEntity.setTopicname(defenceManageEntity.getTopicname());
+            scoreManageEntity.setTopicid(defenceManageEntity.getTopicid());
+            scoreDao.save(scoreManageEntity);
+
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
+            baseResponse.setMessage("已设置！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
+            baseResponse.setMessage("设置异常！");
         }
         return baseResponse;
     }

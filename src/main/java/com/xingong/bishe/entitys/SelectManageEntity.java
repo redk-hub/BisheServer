@@ -18,6 +18,11 @@ public class SelectManageEntity {
     private String taskbookContent;
     private String taskbookTechnology;
     private String taskbookProcess;
+    private String topicname;
+    private String teacherid;
+    private String teachername;
+    private String taskbookWenxian;
+    private Integer taskbookIsconfirm;
 
     @Id
     @Column(name = "studentid")
@@ -139,5 +144,55 @@ public class SelectManageEntity {
 
     public void setTaskbookProcess(String taskbookProcess) {
         this.taskbookProcess = taskbookProcess;
+    }
+
+    @Basic
+    @Column(name = "topicname")
+    public String getTopicname() {
+        return topicname;
+    }
+
+    public void setTopicname(String topicname) {
+        this.topicname = topicname;
+    }
+
+    @Basic
+    @Column(name = "teacherid")
+    public String getTeacherid() {
+        return teacherid;
+    }
+
+    public void setTeacherid(String teacherid) {
+        this.teacherid = teacherid;
+    }
+
+    @Basic
+    @Column(name = "teachername")
+    public String getTeachername() {
+        return teachername;
+    }
+
+    public void setTeachername(String teachername) {
+        this.teachername = teachername;
+    }
+
+    @Basic
+    @Column(name = "taskbook_wenxian")
+    public String getTaskbookWenxian() {
+        return taskbookWenxian;
+    }
+
+    public void setTaskbookWenxian(String taskbookWenxian) {
+        this.taskbookWenxian = taskbookWenxian;
+    }
+
+    @Basic
+    @Column(name = "taskbook_isconfirm")
+    public Integer getTaskbookIsconfirm() {
+        return taskbookIsconfirm;
+    }
+
+    public void setTaskbookIsconfirm(Integer taskbookIsconfirm) {
+        this.taskbookIsconfirm = taskbookIsconfirm;
     }
 }

@@ -1,7 +1,6 @@
 package com.xingong.bishe.entitys;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -14,10 +13,8 @@ public class NoticeEntity {
     private String userid;
     private String noticecontent;
     private Date createtime;
-
-    public void setCreatetime(Timestamp createtime) {
-        this.createtime = createtime;
-    }
+    private String noticetitle;
+    private String username;
 
     @Id
     @Column(name = "noticid")
@@ -82,5 +79,25 @@ public class NoticeEntity {
         result = 31 * result + (noticecontent != null ? noticecontent.hashCode() : 0);
         result = 31 * result + (createtime != null ? createtime.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "noticetitle")
+    public String getNoticetitle() {
+        return noticetitle;
+    }
+
+    public void setNoticetitle(String noticetitle) {
+        this.noticetitle = noticetitle;
+    }
+
+    @Basic
+    @Column(name = "username")
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

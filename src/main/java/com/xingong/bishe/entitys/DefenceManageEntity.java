@@ -2,6 +2,7 @@ package com.xingong.bishe.entitys;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by zhang on 2018/4/23.
@@ -16,8 +17,14 @@ public class DefenceManageEntity {
     private String paperfinalPath;
     private Integer paperfinalIspass;
     private String paperfinalSuggest;
-    private Timestamp defenceTime;
+    private Date defenceTime;
     private Integer defenceScore;
+    private String topicname;
+    private String studentname;
+    private String teacherid;
+    private String teachername;
+    private String topicid;
+    private String defenceLocation;
 
     @Id
     @Column(name = "studentid")
@@ -91,11 +98,11 @@ public class DefenceManageEntity {
 
     @Basic
     @Column(name = "defence_time")
-    public Timestamp getDefenceTime() {
+    public Date getDefenceTime() {
         return defenceTime;
     }
 
-    public void setDefenceTime(Timestamp defenceTime) {
+    public void setDefenceTime(Date defenceTime) {
         this.defenceTime = defenceTime;
     }
 
@@ -147,5 +154,65 @@ public class DefenceManageEntity {
         result = 31 * result + (defenceTime != null ? defenceTime.hashCode() : 0);
         result = 31 * result + (defenceScore != null ? defenceScore.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "topicname")
+    public String getTopicname() {
+        return topicname;
+    }
+
+    public void setTopicname(String topicname) {
+        this.topicname = topicname;
+    }
+
+    @Basic
+    @Column(name = "studentname")
+    public String getStudentname() {
+        return studentname;
+    }
+
+    public void setStudentname(String studentname) {
+        this.studentname = studentname;
+    }
+
+    @Basic
+    @Column(name = "teacherid")
+    public String getTeacherid() {
+        return teacherid;
+    }
+
+    public void setTeacherid(String teacherid) {
+        this.teacherid = teacherid;
+    }
+
+    @Basic
+    @Column(name = "teachername")
+    public String getTeachername() {
+        return teachername;
+    }
+
+    public void setTeachername(String teachername) {
+        this.teachername = teachername;
+    }
+
+    @Basic
+    @Column(name = "topicid")
+    public String getTopicid() {
+        return topicid;
+    }
+
+    public void setTopicid(String topicid) {
+        this.topicid = topicid;
+    }
+
+    @Basic
+    @Column(name = "defence_location")
+    public String getDefenceLocation() {
+        return defenceLocation;
+    }
+
+    public void setDefenceLocation(String defenceLocation) {
+        this.defenceLocation = defenceLocation;
     }
 }

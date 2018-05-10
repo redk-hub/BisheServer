@@ -15,6 +15,12 @@ public class OpenManageEntity {
     private String wenxianPath;
     private Integer wenxianIspass;
     private String wenxianSuggest;
+    private String studentname;
+    private String topicname;
+    private Integer wenxianScore;
+    private Integer openreportScore;
+    private String teacherid;
+    private String teachername;
 
     @Id
     @Column(name = "studentid")
@@ -119,5 +125,65 @@ public class OpenManageEntity {
         result = 31 * result + (wenxianIspass != null ? wenxianIspass.hashCode() : 0);
         result = 31 * result + (wenxianSuggest != null ? wenxianSuggest.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "studentname")
+    public String getStudentname() {
+        return studentname;
+    }
+
+    public void setStudentname(String studentname) {
+        this.studentname = studentname;
+    }
+
+    @Basic
+    @Column(name = "topicname")
+    public String getTopicname() {
+        return topicname;
+    }
+
+    public void setTopicname(String topicname) {
+        this.topicname = topicname;
+    }
+
+    @Basic
+    @Column(name = "wenxian_score")
+    public Integer getWenxianScore() {
+        return wenxianScore;
+    }
+
+    public void setWenxianScore(Integer wenxianScore) {
+        this.wenxianScore = wenxianScore;
+    }
+
+    @Basic
+    @Column(name = "openreport_score")
+    public Integer getOpenreportScore() {
+        return openreportScore;
+    }
+
+    public void setOpenreportScore(Integer openreportScore) {
+        this.openreportScore = openreportScore;
+    }
+
+    @Basic
+    @Column(name = "teacherid")
+    public String getTeacherid() {
+        return teacherid;
+    }
+
+    public void setTeacherid(String teacherid) {
+        this.teacherid = teacherid;
+    }
+
+    @Basic
+    @Column(name = "teachername")
+    public String getTeachername() {
+        return teachername;
+    }
+
+    public void setTeachername(String teachername) {
+        this.teachername = teachername;
     }
 }

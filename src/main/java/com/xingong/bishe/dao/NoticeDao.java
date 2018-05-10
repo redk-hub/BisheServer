@@ -10,6 +10,6 @@ import java.util.List;
  * Created by liekkas on 2018/5/3.
  */
 public interface NoticeDao extends JpaRepository<NoticeEntity,String> {
-    @Query("select t from NoticeEntity t where t.userid=?1")
-    public List<NoticeEntity> noticeList(String userid);
+    @Query("select t from NoticeEntity t")
+    public List<NoticeEntity> noticeList();
         }

@@ -1,12 +1,14 @@
 package com.xingong.bishe.entitys;
 
+
+
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
  * Created by zhang on 2018/5/3.
  */
+
 @Entity
 @Table(name = "topic", schema = "bishe", catalog = "")
 public class TopicEntity {
