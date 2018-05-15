@@ -17,4 +17,7 @@ public interface ScoreDao extends JpaRepository<ScoreManageEntity,String> {
 
     @Query("select t from ScoreManageEntity t where t.teacherid = ?1")
     public Page<ScoreManageEntity> queryScorePage(String teacherid , Pageable pageable);
+
+    @Query("select t from ScoreManageEntity t where t.isrecommend = ?1")
+    public Page<ScoreManageEntity> queryGoodPage(int state , Pageable pageable);
 }

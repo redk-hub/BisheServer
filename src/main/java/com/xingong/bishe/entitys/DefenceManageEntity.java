@@ -18,13 +18,13 @@ public class DefenceManageEntity {
     private Integer paperfinalIspass;
     private String paperfinalSuggest;
     private Date defenceTime;
-    private Integer defenceScore;
     private String topicname;
     private String studentname;
     private String teacherid;
     private String teachername;
     private String topicid;
     private String defenceLocation;
+    private Integer groupid;
 
     @Id
     @Column(name = "studentid")
@@ -106,16 +106,6 @@ public class DefenceManageEntity {
         this.defenceTime = defenceTime;
     }
 
-    @Basic
-    @Column(name = "defence_score")
-    public Integer getDefenceScore() {
-        return defenceScore;
-    }
-
-    public void setDefenceScore(Integer defenceScore) {
-        this.defenceScore = defenceScore;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -137,7 +127,6 @@ public class DefenceManageEntity {
         if (paperfinalSuggest != null ? !paperfinalSuggest.equals(that.paperfinalSuggest) : that.paperfinalSuggest != null)
             return false;
         if (defenceTime != null ? !defenceTime.equals(that.defenceTime) : that.defenceTime != null) return false;
-        if (defenceScore != null ? !defenceScore.equals(that.defenceScore) : that.defenceScore != null) return false;
 
         return true;
     }
@@ -152,7 +141,6 @@ public class DefenceManageEntity {
         result = 31 * result + (paperfinalIspass != null ? paperfinalIspass.hashCode() : 0);
         result = 31 * result + (paperfinalSuggest != null ? paperfinalSuggest.hashCode() : 0);
         result = 31 * result + (defenceTime != null ? defenceTime.hashCode() : 0);
-        result = 31 * result + (defenceScore != null ? defenceScore.hashCode() : 0);
         return result;
     }
 
@@ -214,5 +202,15 @@ public class DefenceManageEntity {
 
     public void setDefenceLocation(String defenceLocation) {
         this.defenceLocation = defenceLocation;
+    }
+
+    @Basic
+    @Column(name = "groupid")
+    public Integer getGroupid() {
+        return groupid;
+    }
+
+    public void setGroupid(Integer groupid) {
+        this.groupid = groupid;
     }
 }

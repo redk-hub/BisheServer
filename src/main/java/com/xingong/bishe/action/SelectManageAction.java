@@ -52,6 +52,7 @@ public class SelectManageAction {
 
     Logger logger = Logger.getLogger(SelectManageAction.class);
 
+
     /**
      * 分页查询课题
      *
@@ -87,6 +88,8 @@ public class SelectManageAction {
         }
         return baseResponse;
     }
+
+
 
     /**
      * 分页查询选题成功课题

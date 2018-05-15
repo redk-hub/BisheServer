@@ -40,4 +40,14 @@ public class ScoreService {
         scoreManageEntity.setIsrecommend(param.getIsrecommend());
         scoreDao.save(scoreManageEntity);
     }
+    public void recommend(String studentid ,int recommend){
+        ScoreManageEntity scoreManageEntity = scoreDao.queryByStuid(studentid);
+        scoreManageEntity.setIsrecommend(recommend);
+        scoreDao.save(scoreManageEntity);
+    }
+
+    public Page<ScoreManageEntity> findGoodByPage(int state, Pageable pageable){
+        return scoreDao.queryGoodPage(state,pageable);
+    }
+
 }

@@ -12,10 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.CriteriaBuilder;
 
@@ -31,23 +28,23 @@ public class UserAction {
     //打印log
     Logger logger = Logger.getLogger(UserAction.class);
 
-    @RequestMapping(value = "login",method = {RequestMethod.GET},produces = {"application/json;charset=UTF-8" })
+    @RequestMapping(value = "login", method = {RequestMethod.GET}, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public BaseResponse login(String userid, String password){
+    public BaseResponse login(String userid, String password) {
 
         BaseResponse baseResponse = new BaseResponse();
 
         try {
             UserEntity userInfo = userService.getUserById(userid);
-            if (userInfo != null && password.equals(userInfo.getUserpassword())){
+            if (userInfo != null && password.equals(userInfo.getUserpassword())) {
                 baseResponse.setData(userInfo);
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
                 baseResponse.setMessage("登录成功！");
-            }else {
+            } else {
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
                 baseResponse.setMessage("账号或者密码错误！");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
             baseResponse.setMessage("登录异常！");
@@ -58,26 +55,27 @@ public class UserAction {
 
     /**
      * 查询用户信息
+     *
      * @param userid
      * @return
      */
-    @RequestMapping(value = "info",method = {RequestMethod.GET},produces = {"application/json;charset=UTF-8" })
+    @RequestMapping(value = "info", method = {RequestMethod.GET}, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public BaseResponse info(String userid){
+    public BaseResponse info(String userid) {
 
         BaseResponse baseResponse = new BaseResponse();
 
         try {
             UserEntity userInfo = userService.getUserById(userid);
-            if (userInfo != null){
+            if (userInfo != null) {
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
                 baseResponse.setMessage("查询成功！");
                 baseResponse.setData(userInfo);
-            }else {
+            } else {
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
                 baseResponse.setMessage("用户信息为空！");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
             baseResponse.setMessage("查询异常！");
@@ -85,30 +83,52 @@ public class UserAction {
         }
         return baseResponse;
     }
+
     /**
      * 修改用户密码
+     *
      * @param userid
      * @param password
      * @return
      */
-    @RequestMapping(value = "updatepass",method = {RequestMethod.GET})
+    @RequestMapping(value = "updatepass", method = {RequestMethod.GET})
     @ResponseBody
-    public BaseResponse updatepass(String userid,String password){
+    public BaseResponse updatepass(String userid, String password) {
         BaseResponse baseResponse = new BaseResponse();
 
         try {
             UserEntity userEntity = userService.getUserById(userid);
-            if (userEntity != null){
+            if (userEntity != null) {
                 userEntity.setUserpassword(password);
                 userService.update(userEntity);
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
                 baseResponse.setMessage("修改成功！");
-            }else {
+            } else {
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
                 baseResponse.setMessage("修改失败！");
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
+            baseResponse.setMessage("修改异常！");
+        }
+        return baseResponse;
+    }
+
+    @RequestMapping(value = "delete", method = {RequestMethod.GET})
+    @ResponseBody
+    public BaseResponse delete(String userid) {
+        BaseResponse baseResponse = new BaseResponse();
+
+        try {
+            userService.delete(userid);
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
+            baseResponse.setMessage("删除成功！");
+        } catch (Exception e)
+
+        {
             e.printStackTrace();
             logger.error(e.getMessage());
             baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
@@ -119,23 +139,24 @@ public class UserAction {
 
     /**
      * 注册用户
+     *
      * @param userEntity
      * @return
      */
-    @RequestMapping(value = "register",method = {RequestMethod.POST},produces = {"application/json"})
+    @RequestMapping(value = "register", method = {RequestMethod.POST}, produces = {"application/json"})
     @ResponseBody
-    public BaseResponse register(UserEntity userEntity){
+    public BaseResponse register(@RequestBody UserEntity userEntity) {
         BaseResponse baseResponse = new BaseResponse();
         try {
-            if (userEntity != null){
+            if (userEntity != null) {
                 userService.register(userEntity);
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
                 baseResponse.setMessage("注册成功！");
-            }else {
+            } else {
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
                 baseResponse.setMessage("注册信息为空！");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
             baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
@@ -146,6 +167,7 @@ public class UserAction {
 
     /**
      * 根据用户角色查询用户
+     *
      * @param page
      * @param size
      * @param role
@@ -162,11 +184,11 @@ public class UserAction {
         try {
 //            Sort sort = new Sort(Sort.Direction.DESC, "createtime");
             Pageable pageable = new PageRequest(page, size);
-            Page<UserEntity> userList = userService.queryPageByRole(role,collegeid, pageable);
-            if (userList.getContent().size() == 0){
+            Page<UserEntity> userList = userService.queryPageByRole(role, collegeid, pageable);
+            if (userList.getContent().size() == 0) {
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
                 baseResponse.setMessage("本学院该角色没有用户！");
-            }else {
+            } else {
                 baseResponse.setData(userList);
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
                 baseResponse.setMessage("查询成功！");

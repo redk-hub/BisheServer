@@ -30,6 +30,9 @@ public class UserService {
         return userDao.getUserById(userid);
     }
 
+    public void delete(String userid){
+        userDao.delete(userid);
+    }
     /**
      * 用户注册
      * @param userEntity

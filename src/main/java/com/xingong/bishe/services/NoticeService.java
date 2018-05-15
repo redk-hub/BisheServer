@@ -22,4 +22,8 @@ public class NoticeService {
         return noticeList;
     }
 
+    public void insert(NoticeEntity noticeEntity){
+        noticeDao.save(noticeEntity);
+    }
+
 }

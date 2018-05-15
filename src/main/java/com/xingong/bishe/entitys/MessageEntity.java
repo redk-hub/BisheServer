@@ -17,6 +17,7 @@ public class MessageEntity {
     private String messagecontent;
     private Timestamp createtime;
     private String messageid;
+    private String replycontent;
 
     @Basic
     @Column(name = "senderid")
@@ -127,5 +128,15 @@ public class MessageEntity {
 
     public void setMessageid(String messageid) {
         this.messageid = messageid;
+    }
+
+    @Basic
+    @Column(name = "replycontent")
+    public String getReplycontent() {
+        return replycontent;
+    }
+
+    public void setReplycontent(String replycontent) {
+        this.replycontent = replycontent;
     }
 }

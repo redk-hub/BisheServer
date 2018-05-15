@@ -130,6 +130,7 @@ public class TopicAction {
 
         try {
             topicService.updateState(topicstate, topicid);
+            baseResponse.setData(topicstate);
             baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
             baseResponse.setMessage("审批成功！");
         } catch (Exception e) {
@@ -162,6 +163,42 @@ public class TopicAction {
             if (topicList.getContent().size() == 0){
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
                 baseResponse.setMessage("该老师没有课题！");
+            }else {
+                baseResponse.setData(topicList);
+                baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
+                baseResponse.setMessage("查询成功！");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
+            baseResponse.setMessage("查询异常！");
+        }
+        return baseResponse;
+    }
+
+    /**
+     * 根据课题名称模糊查询课题列表
+     * @param page
+     * @param size
+     * @param topicname
+     * @return
+     */
+    @RequestMapping(value = "querybylike", method = {RequestMethod.GET})
+    @ResponseBody
+    public BaseResponse queryByLike(@RequestParam(value = "page", defaultValue = "0") int page,
+                                    @RequestParam(value = "size", defaultValue = "15") int size,
+                                    @RequestParam(value = "topicname") String topicname) {
+        BaseResponse baseResponse = new BaseResponse();
+
+        try {
+            Sort sort = new Sort(Sort.Direction.DESC, "createtime");
+            Pageable pageable = new PageRequest(page, size, sort);
+            Page<TopicEntity> topicList = topicService.findAllByLike("%"+topicname+"%", pageable);
+            if (topicList.getContent().size() == 0){
+                baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
+                baseResponse.setMessage("没有结果！");
             }else {
                 baseResponse.setData(topicList);
                 baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);

@@ -19,6 +19,10 @@ public interface TopicDao extends PagingAndSortingRepository<TopicEntity,String>
     @Query("select t from TopicEntity t where t.teacherid = ?1")
     public Page<TopicEntity> findAllByPage(String topicteacher, Pageable pageable);
 
+    //模糊查询
+    @Query("select t from TopicEntity t where t.topicname like ?1")
+    public Page<TopicEntity> findAllByLike(String topicname, Pageable pageable);
+
     @Query("select t from TopicEntity t where t.teacherid = ?1")
     public List<TopicEntity> topicList(String userid);
 

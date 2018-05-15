@@ -68,7 +68,7 @@ public class MessageAction {
     public BaseResponse query(@RequestParam(value = "page", defaultValue = "0") int page,
                               @RequestParam(value = "size", defaultValue = "15") int size,
                               @RequestParam(value = "receiverid", required = false, defaultValue = "") String receiverid,
-                              @RequestParam(value = "state", required = false, defaultValue = "") int state) {
+                              @RequestParam(value = "state", required = false, defaultValue = "") String state) {
         BaseResponse baseResponse = new BaseResponse();
         try {
             Sort sort = new Sort(Sort.Direction.DESC, "createtime");
@@ -104,8 +104,8 @@ public class MessageAction {
     @ResponseBody
     public BaseResponse senderquery(@RequestParam(value = "page", defaultValue = "0") int page,
                               @RequestParam(value = "size", defaultValue = "15") int size,
-                              @RequestParam(value = "senderid", required = false, defaultValue = "") String senderid,
-                              @RequestParam(value = "state", required = false, defaultValue = "") int state) {
+                              @RequestParam(value = "senderid") String senderid,
+                              @RequestParam(value = "state", required = false, defaultValue = "") String state) {
         BaseResponse baseResponse = new BaseResponse();
         try {
             Sort sort = new Sort(Sort.Direction.DESC, "createtime");
@@ -124,6 +124,24 @@ public class MessageAction {
             e.printStackTrace();
             baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
             baseResponse.setMessage("查询异常！");
+        }
+        return baseResponse;
+    }
+
+    @RequestMapping(value = "reply", method = {RequestMethod.GET})
+    @ResponseBody
+    public BaseResponse reply(String messageid,String replycontent) {
+        BaseResponse baseResponse = new BaseResponse();
+        try {
+            MessageEntity messageEntity = messageService.Reply(messageid);
+            messageEntity.setReplycontent(replycontent);
+            messageDao.save(messageEntity);
+            baseResponse.setMessage("回复成功！");
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
+            baseResponse.setMessage("回复异常！");
         }
         return baseResponse;
     }

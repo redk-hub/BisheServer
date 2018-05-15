@@ -91,7 +91,7 @@ public class OpenManageService {
 
 
     /**
-     * 设置开题报告是否通过
+     * 设置文献报告是否通过
      * @param studentid
      * @param ispass
      */

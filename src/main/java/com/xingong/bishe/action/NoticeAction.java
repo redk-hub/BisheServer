@@ -5,13 +5,15 @@ import com.xingong.bishe.commonutils.GetUuid;
 import com.xingong.bishe.commonutils.ReturnInfo;
 import com.xingong.bishe.dao.NoticeDao;
 import com.xingong.bishe.entitys.NoticeEntity;
+import com.xingong.bishe.entitys.TopicEntity;
 import com.xingong.bishe.services.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,15 +28,26 @@ public class NoticeAction {
 
     @Autowired
     NoticeDao noticeDao;
+
+
     @RequestMapping(value = "query",method = {RequestMethod.GET})
     @ResponseBody
-    public BaseResponse query(){
+    public BaseResponse query(@RequestParam(value = "page", defaultValue = "0") int page,
+                              @RequestParam(value = "size", defaultValue = "15") int size){
         BaseResponse baseResponse = new BaseResponse();
         try {
-            List<NoticeEntity> noticeEntityList =noticeService.queryNotice();
-            baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
-            baseResponse.setData( noticeEntityList);
-            baseResponse.setMessage("查询公告成功！");
+            Sort sort = new Sort(Sort.Direction.DESC, "createtime");
+            Pageable pageable = new PageRequest(page, size, sort);
+            Page<NoticeEntity> noticeList =noticeDao.findAll(pageable);
+            if (noticeList.getContent().size() == 0){
+                baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_FAILURE);
+                baseResponse.setMessage("没有公告！");
+            }else {
+                baseResponse.setData(noticeList);
+                baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
+                baseResponse.setMessage("查询成功！");
+            }
+
 
         }catch (Exception e){
             e.printStackTrace();
@@ -56,6 +69,7 @@ public class NoticeAction {
         try {
             String noticeid = GetUuid.getId();
             param.setNoticid(noticeid);
+
             noticeDao.save(param);
             baseResponse.setStatus(ReturnInfo.RESPONSE_STATUS_OK);
             baseResponse.setMessage("添加公告成功！");

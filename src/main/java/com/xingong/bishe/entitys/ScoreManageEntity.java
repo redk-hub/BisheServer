@@ -1,6 +1,8 @@
 package com.xingong.bishe.entitys;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by zhang on 2018/4/23.
@@ -17,6 +19,9 @@ public class ScoreManageEntity {
     private String topicid;
     private String teacherid;
     private Integer isrecommend;
+    private String paperpath;
+    private Date createtime;
+    private String suggest;
 
     @Id
     @Column(name = "studentid")
@@ -126,5 +131,35 @@ public class ScoreManageEntity {
 
     public void setIsrecommend(Integer isrecommend) {
         this.isrecommend = isrecommend;
+    }
+
+    @Basic
+    @Column(name = "paperpath")
+    public String getPaperpath() {
+        return paperpath;
+    }
+
+    public void setPaperpath(String paperpath) {
+        this.paperpath = paperpath;
+    }
+
+    @Basic
+    @Column(name = "createtime")
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
+    }
+
+    @Basic
+    @Column(name = "suggest")
+    public String getSuggest() {
+        return suggest;
+    }
+
+    public void setSuggest(String suggest) {
+        this.suggest = suggest;
     }
 }

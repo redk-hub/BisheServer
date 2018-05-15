@@ -52,6 +52,11 @@ public class TopicService {
 
     }
 
+    public Page<TopicEntity> findAllByLike(String topicname, Pageable pageable){
+
+            return topicDao.findAllByLike(topicname,pageable);
+    }
+
     public boolean selectTopic(String topicid){
         TopicEntity topicEntity = topicDao.queryById(topicid);
         if (topicEntity.getAlreadynum()<topicEntity.getSupplynum()){

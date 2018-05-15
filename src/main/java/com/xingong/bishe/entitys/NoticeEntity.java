@@ -11,10 +11,10 @@ import java.util.Date;
 public class NoticeEntity {
     private String noticid;
     private String userid;
-    private String noticecontent;
     private Date createtime;
     private String noticetitle;
     private String username;
+    private String noticecontent;
 
     @Id
     @Column(name = "noticid")
@@ -37,16 +37,6 @@ public class NoticeEntity {
     }
 
     @Basic
-    @Column(name = "noticecontent")
-    public String getNoticecontent() {
-        return noticecontent;
-    }
-
-    public void setNoticecontent(String noticecontent) {
-        this.noticecontent = noticecontent;
-    }
-
-    @Basic
     @Column(name = "createtime")
     public Date getCreatetime() {
         return createtime;
@@ -65,8 +55,7 @@ public class NoticeEntity {
 
         if (noticid != null ? !noticid.equals(that.noticid) : that.noticid != null) return false;
         if (userid != null ? !userid.equals(that.userid) : that.userid != null) return false;
-        if (noticecontent != null ? !noticecontent.equals(that.noticecontent) : that.noticecontent != null)
-            return false;
+
         if (createtime != null ? !createtime.equals(that.createtime) : that.createtime != null) return false;
 
         return true;
@@ -76,7 +65,6 @@ public class NoticeEntity {
     public int hashCode() {
         int result = noticid != null ? noticid.hashCode() : 0;
         result = 31 * result + (userid != null ? userid.hashCode() : 0);
-        result = 31 * result + (noticecontent != null ? noticecontent.hashCode() : 0);
         result = 31 * result + (createtime != null ? createtime.hashCode() : 0);
         return result;
     }
@@ -99,5 +87,15 @@ public class NoticeEntity {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Basic
+    @Column(name = "noticecontent")
+    public String getNoticecontent() {
+        return noticecontent;
+    }
+
+    public void setNoticecontent(String noticecontent) {
+        this.noticecontent = noticecontent;
     }
 }

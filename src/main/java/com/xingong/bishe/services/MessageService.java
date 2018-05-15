@@ -19,18 +19,33 @@ public class MessageService {
     MessageDao messageDao;
 
     //根据状态分页查询
-    public Page<MessageEntity> queryReceiveByState(String receiverid, int state, Pageable pageable){
-        return messageDao.queryReceiveByState(receiverid, state, pageable);
+    public Page<MessageEntity> queryReceiveByState(String receiverid, String state, Pageable pageable){
+        if (state.equals("")){
+            return messageDao.queryReceiveByReceiverid(receiverid,pageable);
+        }else {
+            int messagestate = Integer.parseInt(state);
+            return messageDao.queryReceiveByState(receiverid, messagestate, pageable);
+        }
+
     }
 
     //根据状态分页查询
-    public Page<MessageEntity> querySendByState(String senderid, int state, Pageable pageable){
-        return messageDao.querysendByState(senderid, state, pageable);
+    public Page<MessageEntity> querySendByState(String senderid, String state, Pageable pageable){
+        if (state.equals("")){
+            return messageDao.querysendBySender(senderid,pageable);
+        }else {
+            int messagestate = Integer.parseInt(state);
+            return messageDao.querysendByState(senderid, messagestate, pageable);
+        }
     }
 
     public void setState(String messageid,int state){
         MessageEntity messageEntity = messageDao.query(messageid);
         messageEntity.setMessagestate(state);
         messageDao.save(messageEntity);
+    }
+
+    public MessageEntity Reply(String messageid){
+        return messageDao.query(messageid);
     }
 }
